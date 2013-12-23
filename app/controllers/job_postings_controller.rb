@@ -1,5 +1,6 @@
 class JobPostingsController < ApplicationController
   before_action :set_job_posting, only: [:show, :edit, :update, :destroy]
+  before_action :check_for_new_jobs, only: [:index]
 
   # GET /job_postings
   # GET /job_postings.json
@@ -59,6 +60,14 @@ class JobPostingsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to job_postings_url }
       format.json { head :no_content }
+    end
+  end
+
+  def check_for_new_jobs
+    job_log = JobLog.order('created_at DESC').first
+    
+    if (job_log.blank?) || job_log.created_at < DateTime.now.yesterday.beginning_of_day
+      %x[rake job_postings:fetch RAILS_ENV=development]
     end
   end
 
