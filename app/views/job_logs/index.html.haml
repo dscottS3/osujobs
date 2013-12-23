@@ -1,0 +1,15 @@
+%h1 Listing job_logs
+%table
+  %thead
+    %tr
+      %th
+      %th
+      %th
+  %tbody
+    - @job_logs.each do |job_log|
+      %tr
+        %td= link_to 'Show', job_log
+        %td= link_to 'Edit', edit_job_log_path(job_log)
+        %td= link_to 'Destroy', job_log, method: :delete, data: { confirm: 'Are you sure?' }
+%br/
+= link_to 'New Job log', new_job_log_path

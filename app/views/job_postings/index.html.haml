@@ -1,0 +1,24 @@
+.row
+  .col-md-3
+    = search_form_for @search, url: job_postings_path, method: :get do |f|
+      = f.label :title_cont, "Search"
+      = f.text_field :title_or_department_name_cont
+      .actions= f.submit "Search", class: 'btn btn-primary'
+  .col-md-9
+    %h1 Listing Job Postings
+    = paginate @job_postings
+    %table.table.table-striped
+      %thead
+        %tr
+          %th= sort_link(@search, :title, "Title")
+          %th Posted on
+          %th= sort_link(@search, :department_name, "Department")
+      %tbody
+        - cache @job_postings do
+          - @job_postings.each do |job_posting|
+            - cache job_posting do
+              %tr
+                %td= link_to job_posting.title, '#', class: 'more-info', data: { job_posting_id: job_posting.id }
+                %td= job_posting.published.strftime('%m-%d-%Y')
+                %td= link_to job_posting.department.name, job_posting.department
+    = paginate @job_postings

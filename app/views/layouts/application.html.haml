@@ -1,0 +1,63 @@
+!!!
+%html
+  %head
+    %title OSU Jobs
+    = stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true
+    = javascript_include_tag "application", "data-turbolinks-track" => true
+    = csrf_meta_tags
+  %body
+    .container
+      = yield
+    / Modal
+    #the-modal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
+      .modal-dialog
+        .modal-content
+          .modal-body
+            %h2.loading Loading...
+            %h2
+              %span.title
+            %h4
+              %span.department
+            %h4
+            %h6.date
+            .description
+            %p &nbsp;
+            %center
+              %button.btn.btn-xs.btn-default{"data-dismiss" => "modal", :type => "button"}
+                %span.glyphicon.glyphicon-remove
+                Close
+              %a.btn.btn-xs.btn-primary.edit-payment{:href => "#", :target => "_blank"}
+                %span.glyphicon.glyphicon-edit
+                Apply
+        / /.modal-content
+      / /.modal-dialog
+    / /.modal
+    :javascript
+      $(function(){
+
+      	$('a.more-info').on('click', function() {
+      		job_posting_id = $(this).data('job-posting-id');
+      		$('#the-modal').modal('toggle');
+      		$('.loading').show();
+      		$('.modal-title').hide();
+      		$('.description').hide();
+      		$('.amount').hide();
+      		$('.client').hide();
+      		$('.date').hide();
+      		$('.edit-payment').hide();
+      		$.get("/job_postings/" + job_posting_id + ".json", function(job_posting) {
+      			$('.loading').hide();
+      			$('.title').html(job_posting.title).show();
+      			$('.description').html(job_posting.description).show();
+      			$('.department').html(job_posting.department.name).show();
+      			$('.date').html('Posted on: ' + job_posting.published_at).show();
+      			$('.edit-payment').show();
+      			$('.edit-payment').attr('href', job_posting.link);
+      		})
+      		return false;
+      	})
+
+      	$(':submit').addClass('btn btn-primary').css('margin-top', '10px');
+      	$(':text').addClass('form-control');
+      	$('table').addClass('table table-hover');
+      })

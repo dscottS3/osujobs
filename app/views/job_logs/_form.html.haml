@@ -1,0 +1,11 @@
+= form_for(@job_log) do |f|
+  - if @job_log.errors.any?
+    #error_explanation
+      %h2
+        = pluralize(@job_log.errors.count, "error")
+        prohibited this job_log from being saved:
+      %ul
+        - @job_log.errors.full_messages.each do |msg|
+          %li= msg
+  .actions
+    = f.submit

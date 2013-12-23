@@ -9,7 +9,7 @@ gem "feedzirra", "~> 0.5.0"
 gem 'ransack'
 gem 'dalli'
 gem 'sqlite3'
-gem 'devise', '~> 3.1.1'
+gem 'haml'
 gem 'kaminari', '~> 0.14.1'
 gem 'bootstrap-sass'
 
@@ -45,6 +45,7 @@ end
 group :development do
   gem 'quiet_assets'
   gem 'rack-mini-profiler'
+  gem 'erb2haml'
 end
 
 # Use ActiveModel has_secure_password
